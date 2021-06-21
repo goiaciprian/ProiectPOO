@@ -1,0 +1,419 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="databaseiescModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Catalog_Note">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cod_Disciplina" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NumarMatricol" Type="int" Nullable="false" />
+          <Property Name="Nota" Type="int" Nullable="false" />
+          <Property Name="Sters" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Discipline">
+          <Key>
+            <PropertyRef Name="Cod_Disciplina" />
+          </Key>
+          <Property Name="Cod_Disciplina" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Denumire" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NumarCredite" Type="int" Nullable="false" />
+          <Property Name="Sters" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Studenti">
+          <Key>
+            <PropertyRef Name="NumarMatricol" />
+          </Key>
+          <Property Name="NumarMatricol" Type="int" Nullable="false" />
+          <Property Name="Nume" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prenume" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sters" Type="tinyint" />
+        </EntityType>
+        <Association Name="fg_catre_student">
+          <End Role="Studenti" Type="Self.Studenti" Multiplicity="1" />
+          <End Role="Catalog_Note" Type="Self.Catalog_Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Studenti">
+              <PropertyRef Name="NumarMatricol" />
+            </Principal>
+            <Dependent Role="Catalog_Note">
+              <PropertyRef Name="NumarMatricol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_catre_discipline">
+          <End Role="Discipline" Type="Self.Discipline" Multiplicity="1" />
+          <End Role="Catalog_Note" Type="Self.Catalog_Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discipline">
+              <PropertyRef Name="Cod_Disciplina" />
+            </Principal>
+            <Dependent Role="Catalog_Note">
+              <PropertyRef Name="Cod_Disciplina" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="CatalogDELETE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="CatalogGET" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="CatalogMERGE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="CodDisciplina" Type="varchar" Mode="In" />
+          <Parameter Name="NumarMatricol" Type="int" Mode="In" />
+          <Parameter Name="Nota" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DisciplineDELETE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Cod_Disciplina" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="DisciplineGET" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DisciplineMERGE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CodDisciplina" Type="varchar" Mode="In" />
+          <Parameter Name="Denumire" Type="varchar" Mode="In" />
+          <Parameter Name="NumarCredite" Type="int" Mode="In" />
+        </Function>
+        <Function Name="StudentiDELETE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NumarMatricol" Type="int" Mode="In" />
+        </Function>
+        <Function Name="StudentiGET" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="StudentiMERGE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NumarMatricol" Type="int" Mode="In" />
+          <Parameter Name="Nume" Type="varchar" Mode="In" />
+          <Parameter Name="Prenume" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="databaseiescModelStoreContainer">
+          <EntitySet Name="Catalog_Note" EntityType="Self.Catalog_Note" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Discipline" EntityType="Self.Discipline" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Studenti" EntityType="Self.Studenti" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fg_catre_student" Association="Self.fg_catre_student">
+            <End Role="Studenti" EntitySet="Studenti" />
+            <End Role="Catalog_Note" EntitySet="Catalog_Note" />
+          </AssociationSet>
+          <AssociationSet Name="fk_catre_discipline" Association="Self.fk_catre_discipline">
+            <End Role="Discipline" EntitySet="Discipline" />
+            <End Role="Catalog_Note" EntitySet="Catalog_Note" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="databaseiescModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Catalog_Note">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cod_Disciplina" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumarMatricol" Type="Int32" Nullable="false" />
+          <Property Name="Nota" Type="Int32" Nullable="false" />
+          <Property Name="Sters" Type="Byte" />
+          <NavigationProperty Name="Studenti" Relationship="Self.fg_catre_student" FromRole="Catalog_Note" ToRole="Studenti" />
+          <NavigationProperty Name="Discipline" Relationship="Self.fk_catre_discipline" FromRole="Catalog_Note" ToRole="Discipline" />
+        </EntityType>
+        <EntityType Name="Discipline">
+          <Key>
+            <PropertyRef Name="Cod_Disciplina" />
+          </Key>
+          <Property Name="Cod_Disciplina" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Denumire" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumarCredite" Type="Int32" Nullable="false" />
+          <Property Name="Sters" Type="Byte" />
+          <NavigationProperty Name="Catalog_Note" Relationship="Self.fk_catre_discipline" FromRole="Discipline" ToRole="Catalog_Note" />
+        </EntityType>
+        <EntityType Name="Studenti">
+          <Key>
+            <PropertyRef Name="NumarMatricol" />
+          </Key>
+          <Property Name="NumarMatricol" Type="Int32" Nullable="false" />
+          <Property Name="Nume" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Prenume" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sters" Type="Byte" />
+          <NavigationProperty Name="Catalog_Note" Relationship="Self.fg_catre_student" FromRole="Studenti" ToRole="Catalog_Note" />
+        </EntityType>
+        <Association Name="fg_catre_student">
+          <End Role="Studenti" Type="Self.Studenti" Multiplicity="1" />
+          <End Role="Catalog_Note" Type="Self.Catalog_Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Studenti">
+              <PropertyRef Name="NumarMatricol" />
+            </Principal>
+            <Dependent Role="Catalog_Note">
+              <PropertyRef Name="NumarMatricol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_catre_discipline">
+          <End Role="Discipline" Type="Self.Discipline" Multiplicity="1" />
+          <End Role="Catalog_Note" Type="Self.Catalog_Note" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Discipline">
+              <PropertyRef Name="Cod_Disciplina" />
+            </Principal>
+            <Dependent Role="Catalog_Note">
+              <PropertyRef Name="Cod_Disciplina" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="databaseiesc" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Catalog_Note" EntityType="Self.Catalog_Note" />
+          <EntitySet Name="Disciplines" EntityType="Self.Discipline" />
+          <EntitySet Name="Studentis" EntityType="Self.Studenti" />
+          <AssociationSet Name="fg_catre_student" Association="Self.fg_catre_student">
+            <End Role="Studenti" EntitySet="Studentis" />
+            <End Role="Catalog_Note" EntitySet="Catalog_Note" />
+          </AssociationSet>
+          <AssociationSet Name="fk_catre_discipline" Association="Self.fk_catre_discipline">
+            <End Role="Discipline" EntitySet="Disciplines" />
+            <End Role="Catalog_Note" EntitySet="Catalog_Note" />
+          </AssociationSet>
+          <FunctionImport Name="CatalogDELETE" ReturnType="Collection(databaseiescModel.CatalogDELETE_Result)">
+            <Parameter Name="ID" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="CatalogGET" ReturnType="Collection(databaseiescModel.CatalogGET_Result)" />
+          <FunctionImport Name="CatalogMERGE" ReturnType="Collection(databaseiescModel.CatalogMERGE_Result)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="CodDisciplina" Mode="In" Type="String" />
+            <Parameter Name="NumarMatricol" Mode="In" Type="Int32" />
+            <Parameter Name="Nota" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DisciplineDELETE" ReturnType="Collection(databaseiescModel.DisciplineDELETE_Result)">
+            <Parameter Name="Cod_Disciplina" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DisciplineGET" ReturnType="Collection(databaseiescModel.DisciplineGET_Result)" />
+          <FunctionImport Name="DisciplineMERGE" ReturnType="Collection(databaseiescModel.DisciplineMERGE_Result)">
+            <Parameter Name="CodDisciplina" Mode="In" Type="String" />
+            <Parameter Name="Denumire" Mode="In" Type="String" />
+            <Parameter Name="NumarCredite" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="StudentiDELETE" ReturnType="Collection(databaseiescModel.StudentiDELETE_Result)">
+            <Parameter Name="NumarMatricol" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="StudentiGET" ReturnType="Collection(databaseiescModel.StudentiGET_Result)" />
+          <FunctionImport Name="StudentiMERGE" ReturnType="Collection(databaseiescModel.StudentiMERGE_Result)">
+            <Parameter Name="NumarMatricol" Mode="In" Type="Int32" />
+            <Parameter Name="Nume" Mode="In" Type="String" />
+            <Parameter Name="Prenume" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="CatalogDELETE_Result">
+          <Property Type="String" Name="Cod_Disciplina" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Denumire" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="NumarCredite" Nullable="false" />
+          <Property Type="Int32" Name="NumarMatricol" Nullable="false" />
+          <Property Type="String" Name="Nume" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Prenume" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="id" Nullable="true" />
+          <Property Type="Int32" Name="Nota" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="CatalogGET_Result">
+          <Property Type="String" Name="Cod_Disciplina" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Denumire" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="NumarCredite" Nullable="false" />
+          <Property Type="Int32" Name="NumarMatricol" Nullable="false" />
+          <Property Type="String" Name="Nume" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Prenume" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="id" Nullable="false" />
+          <Property Type="Int32" Name="Nota" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="CatalogMERGE_Result">
+          <Property Type="String" Name="Cod_Disciplina" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Denumire" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="NumarCredite" Nullable="false" />
+          <Property Type="Int32" Name="NumarMatricol" Nullable="true" />
+          <Property Type="String" Name="Nume" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Prenume" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="id" Nullable="true" />
+          <Property Type="Int32" Name="Nota" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="DisciplineDELETE_Result">
+          <Property Type="String" Name="CodDisciplina" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Denumire" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="NumarCredite" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="DisciplineGET_Result">
+          <Property Type="String" Name="Cod_Disciplina" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Denumire" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="NumarCredite" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="DisciplineMERGE_Result">
+          <Property Type="String" Name="Cod_Disciplina" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Denumire" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="NumarCredite" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="StudentiDELETE_Result">
+          <Property Type="Int32" Name="NumarMatricol" Nullable="true" />
+          <Property Type="String" Name="Nume" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Prenume" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="StudentiGET_Result">
+          <Property Type="Int32" Name="NumarMatricol" Nullable="false" />
+          <Property Type="String" Name="Nume" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Prenume" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="StudentiMERGE_Result">
+          <Property Type="Int32" Name="NumarMatricol" Nullable="true" />
+          <Property Type="String" Name="Nume" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Prenume" Nullable="true" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="databaseiescModelStoreContainer" CdmEntityContainer="databaseiesc">
+          <EntitySetMapping Name="Catalog_Note">
+            <EntityTypeMapping TypeName="databaseiescModel.Catalog_Note">
+              <MappingFragment StoreEntitySet="Catalog_Note">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Cod_Disciplina" ColumnName="Cod_Disciplina" />
+                <ScalarProperty Name="NumarMatricol" ColumnName="NumarMatricol" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+                <ScalarProperty Name="Sters" ColumnName="Sters" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Disciplines">
+            <EntityTypeMapping TypeName="databaseiescModel.Discipline">
+              <MappingFragment StoreEntitySet="Discipline">
+                <ScalarProperty Name="Cod_Disciplina" ColumnName="Cod_Disciplina" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="NumarCredite" ColumnName="NumarCredite" />
+                <ScalarProperty Name="Sters" ColumnName="Sters" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Studentis">
+            <EntityTypeMapping TypeName="databaseiescModel.Studenti">
+              <MappingFragment StoreEntitySet="Studenti">
+                <ScalarProperty Name="NumarMatricol" ColumnName="NumarMatricol" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+                <ScalarProperty Name="Sters" ColumnName="Sters" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CatalogDELETE" FunctionName="databaseiescModel.Store.CatalogDELETE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="databaseiescModel.CatalogDELETE_Result">
+                <ScalarProperty Name="Cod_Disciplina" ColumnName="Cod_Disciplina" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="NumarCredite" ColumnName="NumarCredite" />
+                <ScalarProperty Name="NumarMatricol" ColumnName="NumarMatricol" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CatalogGET" FunctionName="databaseiescModel.Store.CatalogGET">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="databaseiescModel.CatalogGET_Result">
+                <ScalarProperty Name="Cod_Disciplina" ColumnName="Cod_Disciplina" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="NumarCredite" ColumnName="NumarCredite" />
+                <ScalarProperty Name="NumarMatricol" ColumnName="NumarMatricol" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CatalogMERGE" FunctionName="databaseiescModel.Store.CatalogMERGE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="databaseiescModel.CatalogMERGE_Result">
+                <ScalarProperty Name="Cod_Disciplina" ColumnName="Cod_Disciplina" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="NumarCredite" ColumnName="NumarCredite" />
+                <ScalarProperty Name="NumarMatricol" ColumnName="NumarMatricol" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DisciplineDELETE" FunctionName="databaseiescModel.Store.DisciplineDELETE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="databaseiescModel.DisciplineDELETE_Result">
+                <ScalarProperty Name="CodDisciplina" ColumnName="CodDisciplina" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="NumarCredite" ColumnName="NumarCredite" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DisciplineGET" FunctionName="databaseiescModel.Store.DisciplineGET">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="databaseiescModel.DisciplineGET_Result">
+                <ScalarProperty Name="Cod_Disciplina" ColumnName="Cod_Disciplina" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="NumarCredite" ColumnName="NumarCredite" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DisciplineMERGE" FunctionName="databaseiescModel.Store.DisciplineMERGE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="databaseiescModel.DisciplineMERGE_Result">
+                <ScalarProperty Name="Cod_Disciplina" ColumnName="Cod_Disciplina" />
+                <ScalarProperty Name="Denumire" ColumnName="Denumire" />
+                <ScalarProperty Name="NumarCredite" ColumnName="NumarCredite" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="StudentiDELETE" FunctionName="databaseiescModel.Store.StudentiDELETE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="databaseiescModel.StudentiDELETE_Result">
+                <ScalarProperty Name="NumarMatricol" ColumnName="NumarMatricol" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="StudentiGET" FunctionName="databaseiescModel.Store.StudentiGET">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="databaseiescModel.StudentiGET_Result">
+                <ScalarProperty Name="NumarMatricol" ColumnName="NumarMatricol" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="StudentiMERGE" FunctionName="databaseiescModel.Store.StudentiMERGE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="databaseiescModel.StudentiMERGE_Result">
+                <ScalarProperty Name="NumarMatricol" ColumnName="NumarMatricol" />
+                <ScalarProperty Name="Nume" ColumnName="Nume" />
+                <ScalarProperty Name="Prenume" ColumnName="Prenume" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
