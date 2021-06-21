@@ -184,6 +184,7 @@ namespace ProiectPOO
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            Debug.WriteLine("This is git test");
             if(codMatricolTextBox.IsFocused == false && numeTextBox.IsFocused == false && prenumeTextBox.IsFocused == false)
             {
 
