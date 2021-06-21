@@ -4,7 +4,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Diagnostics;
-
+using System.Linq;
+using DatabaseCRUD;
+using DatabaseCRUD.Database;
+using System.Windows.Data;
+using System.Collections.Generic;
 
 namespace ProiectPOO
 {
@@ -13,7 +17,7 @@ namespace ProiectPOO
     /// </summary>
     public partial class MainWindow : Window
     {
-        StudentiGET_Result studentSelectat = null;
+        Studenti studentSelectat = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -22,7 +26,24 @@ namespace ProiectPOO
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(studentiTab.IsSelected) studentSelectat = (StudentiGET_Result)studentiLV.SelectedItem;
+            if(studentiTab.IsSelected)
+            {
+                studentSelectat = (Studenti)studentiLV.SelectedItem;
+                if(studentSelectat != null)
+                {
+                    codMatricolTextBox.Text = studentSelectat.NumarMatricol.ToString();
+                    numeTextBox.Text = studentSelectat.Nume;
+                    prenumeTextBox.Text = studentSelectat.Prenume;
+                    adaugareModificareButton.Content = "Modificare";
+                } else
+                {
+                    codMatricolTextBox.Text = "";
+                    numeTextBox.Text = "";
+                    prenumeTextBox.Text = "";
+                    adaugareModificareButton.Content = "Adaugare";
+                }
+                
+            }
 
             enableDeleteButtonsWhenItemsAreSelected();
         }
@@ -32,19 +53,15 @@ namespace ProiectPOO
         {
             initDisciplineLV();
             initStudentiLV();
-                
+
         }
 
         private void initDisciplineLV ()
         {
             Task.Run(() =>
             {
-                using (var dbContext = new databaseiesc())
-                {
-                    foreach (var disciplina in dbContext.DisciplineGET())
+                    foreach (var disciplina in DBCrud.DisciplineGET().Result)
                         Dispatcher.Invoke(() => disciplineLV.Items.Add(disciplina));
-                }
-
             });
 
         }
@@ -54,10 +71,10 @@ namespace ProiectPOO
             Task.Run(() =>
             {
                 Dispatcher.Invoke(() => studentiLV.Items.Clear());
-                using (var dbContext = new databaseiesc())
+                var studentiList = DBCrud.StudentiGET().Result;;
+                foreach (var stud in DBCrud.StudentiGET().Result)
                 {
-                    foreach (StudentiGET_Result student in dbContext.StudentiGET())
-                        Dispatcher.Invoke(() => studentiLV.Items.Add(student));
+                    Dispatcher.Invoke(() => studentiLV.Items.Add(stud));
                 }
 
             });
@@ -90,14 +107,20 @@ namespace ProiectPOO
 
         private void enableDeleteButtonsWhenItemsAreSelected()
         {
-            if (studentSelectat != null) stergeButtonStudent.IsEnabled = true;
-            else stergeButtonStudent.IsEnabled = false;
+            if (studentSelectat != null)
+            {
+                stergeButtonStudent.IsEnabled = true;
+            }
+            else
+            {
+                stergeButtonStudent.IsEnabled = false;
+            }
         }
 
         private void listViewOnClick(object sender, MouseButtonEventArgs e)
         {
-            resetLVToDefault();
             if (studentiTab.IsSelected) studentSelectat = null;
+            resetLVToDefault();
             enableDeleteButtonsWhenItemsAreSelected();
         }
 
@@ -105,13 +128,11 @@ namespace ProiectPOO
         {
             Task.Run(() =>
             {
-                using (var dbContext = new databaseiesc())
-                {
-                    dbContext.StudentiDELETE(studentSelectat.NumarMatricol);
-                    initStudentiLV();
-                }
+                var deleted = DBCrud.StudentiDELETE(studentSelectat.NumarMatricol).Result;
+                Dispatcher.Invoke(() =>
+                    studentiLV.Items.Remove(studentiLV.Items.Cast<Studenti>().Where(elem => elem.NumarMatricol == deleted.NumarMatricol).First())
+                );
             });
-            resetLVToDefault();
         }
 
         private void resetLVToDefault()
@@ -121,31 +142,38 @@ namespace ProiectPOO
 
         private void adaugareModificareButton_Click(object sender, RoutedEventArgs e)
         {
-            if(studentSelectat == null )
+            string codMatricol = codMatricolTextBox.Text, nume = numeTextBox.Text, prenume = prenumeTextBox.Text;
+            if (codMatricol == "" || !int.TryParse(codMatricol, out _) )
+                codMatricolTextBox.BorderBrush = System.Windows.Media.Brushes.Red;
+            if (nume == "")
+                numeTextBox.BorderBrush = System.Windows.Media.Brushes.Red;
+            if (prenume == "")
+                prenumeTextBox.BorderBrush = System.Windows.Media.Brushes.Red;
+            if (codMatricol == "" || nume == "" || prenume == "" || !int.TryParse(codMatricol, out _))
+                return;
+
+            Task.Run(() =>
             {
-                string codMatricol = codMatricolTextBox.Text, nume = numeTextBox.Text, prenume = prenumeTextBox.Text;
-                if (codMatricol == "" || !int.TryParse(codMatricol, out _) )
-                    codMatricolTextBox.BorderBrush = System.Windows.Media.Brushes.Red;
-                if (nume == "")
-                    numeTextBox.BorderBrush = System.Windows.Media.Brushes.Red;
-                if (prenume == "")
-                    prenumeTextBox.BorderBrush = System.Windows.Media.Brushes.Red;
-                if (codMatricol == "" || nume == "" || prenume == "" || !int.TryParse(codMatricol, out _))
-                    return;
-
-                Task.Run(() =>
+                if (studentSelectat == null)
                 {
-                    using (var context = new databaseiesc())
+                    Dispatcher.Invoke(() =>
                     {
-                        foreach (var adaugat in context.StudentiMERGE(int.Parse(codMatricol), nume, prenume))
-                        {
-                            Debug.WriteLine(adaugat.NumarMatricol);
-                        }
-                        initStudentiLV();
-                    }
-                });
+                        studentiLV.Items.Add(DBCrud.StudentiMERGE(int.Parse(codMatricol), nume, prenume).Result);
+                        studentiLV.Items.Refresh();
+                    });
+                } else
+                {
+                    Dispatcher.Invoke(() => 
+                    {
+                        studentiLV.Items.RemoveAt(studentiLV.SelectedIndex);
+                        studentiLV.Items.Add(DBCrud.StudentiMERGE(int.Parse(codMatricol), nume, prenume).Result);
+                        studentiLV.Items.Refresh();
+                    });
+                }
+                 
+            });
 
-            }
+            
             codMatricolTextBox.Text = "";
             numeTextBox.Text = "";
             prenumeTextBox.Text = "";
@@ -154,5 +182,18 @@ namespace ProiectPOO
             prenumeTextBox.BorderBrush = System.Windows.Media.Brushes.Transparent;
         }
 
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(codMatricolTextBox.IsFocused == false && numeTextBox.IsFocused == false && prenumeTextBox.IsFocused == false)
+            {
+
+                if (e.Key == Key.D1)
+                    catalogTab.IsSelected = true;
+                if (e.Key == Key.D2)
+                    disciplineTab.IsSelected = true;
+                if (e.Key == Key.D3)
+                    studentiTab.IsSelected = true;
+            }
+        }
     }
 }
