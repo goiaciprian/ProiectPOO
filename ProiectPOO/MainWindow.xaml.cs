@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using DatabaseCRUD;
 using DatabaseCRUD.Database;
+using System.Windows.Data;
+using System.Collections.Generic;
 
 namespace ProiectPOO
 {
@@ -51,7 +53,7 @@ namespace ProiectPOO
         {
             initDisciplineLV();
             initStudentiLV();
-                
+
         }
 
         private void initDisciplineLV ()
@@ -69,7 +71,8 @@ namespace ProiectPOO
             Task.Run(() =>
             {
                 Dispatcher.Invoke(() => studentiLV.Items.Clear());
-                foreach(var stud in DBCrud.StudentiGET().Result)
+                var studentiList = DBCrud.StudentiGET().Result;;
+                foreach (var stud in DBCrud.StudentiGET().Result)
                 {
                     Dispatcher.Invoke(() => studentiLV.Items.Add(stud));
                 }
@@ -156,6 +159,7 @@ namespace ProiectPOO
                     Dispatcher.Invoke(() =>
                     {
                         studentiLV.Items.Add(DBCrud.StudentiMERGE(int.Parse(codMatricol), nume, prenume).Result);
+                        studentiLV.Items.Refresh();
                     });
                 } else
                 {
@@ -163,6 +167,7 @@ namespace ProiectPOO
                     {
                         studentiLV.Items.RemoveAt(studentiLV.SelectedIndex);
                         studentiLV.Items.Add(DBCrud.StudentiMERGE(int.Parse(codMatricol), nume, prenume).Result);
+                        studentiLV.Items.Refresh();
                     });
                 }
                  
@@ -177,5 +182,18 @@ namespace ProiectPOO
             prenumeTextBox.BorderBrush = System.Windows.Media.Brushes.Transparent;
         }
 
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(codMatricolTextBox.IsFocused == false && numeTextBox.IsFocused == false && prenumeTextBox.IsFocused == false)
+            {
+
+                if (e.Key == Key.D1)
+                    catalogTab.IsSelected = true;
+                if (e.Key == Key.D2)
+                    disciplineTab.IsSelected = true;
+                if (e.Key == Key.D3)
+                    studentiTab.IsSelected = true;
+            }
+        }
     }
 }
