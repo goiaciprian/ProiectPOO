@@ -53,6 +53,7 @@ namespace ProiectPOO
         {
             initDisciplineLV();
             initStudentiLV();
+            initCatalogLV();
 
         }
 
@@ -64,6 +65,16 @@ namespace ProiectPOO
                         Dispatcher.Invoke(() => disciplineLV.Items.Add(disciplina));
             });
 
+        }
+
+        private void initCatalogLV()
+        {
+            Task.Run(()=> { 
+                foreach(var nota in DBCrud.CatalogGET().Result)
+                {
+                    Dispatcher.Invoke(()=>catalogLV.Items.Add(nota));
+                }
+            });
         }
 
         private void initStudentiLV ()
@@ -99,10 +110,14 @@ namespace ProiectPOO
             this.WindowState = WindowState.Minimized;
         }
 
+        private int counter = 0;
         private void Window_Activated(object sender, EventArgs e)
         {
-            if (this.WindowState == WindowState.Normal) this.WindowState = WindowState.Minimized;
-            else this.WindowState = WindowState.Normal;
+            if (counter == 0)
+                counter++;
+            else 
+                if (this.WindowState == WindowState.Normal) this.WindowState = WindowState.Minimized;
+                else this.WindowState = WindowState.Normal;
         }
 
         private void enableDeleteButtonsWhenItemsAreSelected()

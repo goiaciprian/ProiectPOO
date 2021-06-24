@@ -77,6 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\Catalog.cs" />
     <Compile Include="Database\CatalogDELETE_Result.cs">
       <DependentUpon>dbModel.tt</DependentUpon>
     </Compile>
