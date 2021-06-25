@@ -8,7 +8,9 @@ using System.Linq;
 using DatabaseCRUD;
 using DatabaseCRUD.Database;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Collections.Generic;
+using System.Windows.Media.Animation;
 
 namespace ProiectPOO
 {
@@ -20,7 +22,9 @@ namespace ProiectPOO
         Studenti studentSelectat = null;
         public MainWindow()
         {
+            
             InitializeComponent();
+            showText("Incarcare informatii...");
             initAllLV();
         }
 
@@ -144,9 +148,10 @@ namespace ProiectPOO
             Task.Run(() =>
             {
                 var deleted = DBCrud.StudentiDELETE(studentSelectat.NumarMatricol).Result;
-                Dispatcher.Invoke(() =>
-                    studentiLV.Items.Remove(studentiLV.Items.Cast<Studenti>().Where(elem => elem.NumarMatricol == deleted.NumarMatricol).First())
-                );
+                Dispatcher.Invoke(() => {
+                    studentiLV.Items.Remove(studentiLV.Items.Cast<Studenti>().Where(elem => elem.NumarMatricol == deleted.NumarMatricol).First());
+                    showText("Studentul a fost sters.");
+                });
             });
         }
 
@@ -175,6 +180,7 @@ namespace ProiectPOO
                     {
                         studentiLV.Items.Add(DBCrud.StudentiMERGE(int.Parse(codMatricol), nume, prenume).Result);
                         studentiLV.Items.Refresh();
+                        showText("Studentul a fost adaugat.");
                     });
                 } else
                 {
@@ -183,6 +189,7 @@ namespace ProiectPOO
                         studentiLV.Items.RemoveAt(studentiLV.SelectedIndex);
                         studentiLV.Items.Add(DBCrud.StudentiMERGE(int.Parse(codMatricol), nume, prenume).Result);
                         studentiLV.Items.Refresh();
+                        showText("Studentul a fost modificat.");
                     });
                 }
                  
@@ -210,6 +217,13 @@ namespace ProiectPOO
                 if (e.Key == Key.D3)
                     studentiTab.IsSelected = true;
             }
+        }
+
+        private void showText(string text)
+        {
+            statusbar.Content = text;
+            Storyboard sb = Resources["hideAnimatie"] as Storyboard;
+            sb.Begin(statusbar);
         }
     }
 }

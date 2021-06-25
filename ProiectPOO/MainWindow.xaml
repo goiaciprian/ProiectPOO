@@ -11,10 +11,18 @@
         WindowStartupLocation="CenterScreen"
         MouseDown="Window_MouseDown"
         Activated="Window_Activated"
-        
         KeyDown="Window_KeyDown"
+        Background="Transparent"
+        AllowsTransparency="True"
         >
     <Window.Resources>
+
+        <Storyboard x:Key="hideAnimatie" >
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"  From="1" To="1" Duration="0:0:3" />
+            <!--label shows for 3 sec-->
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" BeginTime="0:0:3" From="1" To="0" DecelerationRatio=".9" Duration="0:0:1" />
+            <!--Fade out the label after 3 sec-->
+        </Storyboard>
 
         <ControlTemplate x:Key="ButonDeBaza" TargetType="{x:Type ButtonBase}">
             <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
@@ -53,7 +61,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-  
+
         <Style x:Key="altaCopie" TargetType="{x:Type TabItem}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
             <Setter Property="Foreground" Value="White"/>
@@ -86,221 +94,302 @@
 
 
     </Window.Resources>
+    <Border BorderThickness="2" CornerRadius="0" BorderBrush="#343a40">
 
-    <Grid Background="#343a40">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="47*" />
-        </Grid.RowDefinitions>
-
-        <Grid>
-
+        <Grid Background="#343a40">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Catalog" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label.Style>
-                    <Style TargetType="Label">
-                        <Setter Property="Foreground" Value="White" />
-                        <Setter Property="FontWeight" Value="DemiBold"/>
-                    </Style>
-                </Label.Style>
-            </Label>
-            <Button Grid.Column="12" Content="X" x:Name="closeButton" Click="closeButton_Click">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="Foreground" Value="White" />
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="BorderThickness" Value="0,0,0,0" />
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="#e72323" />
-                                <Setter Property="Cursor" Value="Hand" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button Grid.Column="11" Content="-" x:Name="minimizeButton" Click="minimizeButton_Click">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="Foreground" Value="White" />
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="BorderThickness" Value="0,0,0,0" />
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Foreground" Value="#e72323" />
-                                <Setter Property="Cursor" Value="Hand" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="47*" />
+                <RowDefinition Height="35" />
+            </Grid.RowDefinitions>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Content="Catalog" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="FontWeight" Value="DemiBold"/>
+                        </Style>
+                    </Label.Style>
+                </Label>
+                <Button Grid.Column="12" Content="X" x:Name="closeButton" Click="closeButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="0,0,0,0" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="#e72323" />
+                                    <Setter Property="Cursor" Value="Hand" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Column="11" Content="-" x:Name="minimizeButton" Click="minimizeButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="0,0,0,0" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="#e72323" />
+                                    <Setter Property="Cursor" Value="Hand" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+
+            <TabControl x:Name="tabsComponent" BorderThickness="0, 0 ,0 ,0" Foreground="black" Background="#343a40" HorizontalAlignment="Center" Height="426" VerticalAlignment="Top" Width="838" Margin="12,11,50,0" Grid.Row="1">
+
+                <TabItem x:Name="catalogTab" Padding="7,2,7,2" Header="Catalog" Style="{DynamicResource altaCopie}" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="190*"/>
+                            <ColumnDefinition Width="207*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListView x:Name="catalogLV" Margin="0,-3,0,10">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding id}"/>
+                                    <GridViewColumn Header="Student">
+                                        <GridViewColumn.DisplayMemberBinding>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="Nume" />
+                                                <Binding Path="Prenume" />
+                                            </MultiBinding>
+                                        </GridViewColumn.DisplayMemberBinding>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Curs" DisplayMemberBinding="{Binding Denumire}"/>
+                                    <GridViewColumn Header="Nota" DisplayMemberBinding="{Binding Nota}"/>
+                                    <GridViewColumn Header="Credite" DisplayMemberBinding="{Binding NumarCredite}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="disciplineTab" Padding="7,2,7,2" Header="Discipline" Style="{DynamicResource altaCopie}" >
+
+                    <Grid Margin="0,0,0,1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="190*"/>
+                            <ColumnDefinition Width="207*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListView Name="disciplineLV" HorizontalAlignment="Left" Width="399" SelectionChanged="ListView_SelectionChanged" Margin="0,-4,0,0" Height="393" VerticalAlignment="Top">
+                            <ListView.View >
+                                <GridView>
+                                    <GridViewColumn Width="100" Header="Cod Disciplina" DisplayMemberBinding="{Binding Cod_Disciplina}"/>
+                                    <GridViewColumn Header="Denumire" Width="175" DisplayMemberBinding="{Binding Denumire}"/>
+                                    <GridViewColumn Width="50" Header="Credite" DisplayMemberBinding="{Binding NumarCredite}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" Margin="0,73,0,0" Width="434">
+                            <Grid HorizontalAlignment="Center" Margin="0, 0, 0, 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="311*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Cod Disciplina" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,10,0" Width="89" />
+                                <TextBox Height="25" Grid.Column="1" Width="200" x:Name="codDisciplinaTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Center" Margin="0, 5, 0, 5" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="311*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Disciplina" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
+                                <TextBox Height="25" Grid.Column="1" Width="200" x:Name="disciplinaTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Center" Margin="0, 5, 0, 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="311*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Nota" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
+                                <TextBox Height="25" Grid.Column="1" Width="200" x:Name="notaTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                            <Grid Margin="0 20 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Column="1" IsEnabled="False" Content="Sterge" x:Name="stergeButtonDisciplina" Template="{DynamicResource ButonDeBaza}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Setter Property="Padding" Value="1" />
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <Button Grid.Column="3" Content="Adaugare" x:Name="adaugareModificareDisciplina" >
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Setter Property="Padding" Value="1" />
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="studentiTab" Padding="7,2,7,2" Header="Studenti" Style="{DynamicResource altaCopie}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="190*"/>
+                            <ColumnDefinition Width="207*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListView MouseLeftButtonDown="listViewOnClick" Name="studentiLV" SelectionChanged="ListView_SelectionChanged" Margin="0,-4,0,10">
+                            <ListView.View >
+                                <GridView>
+                                    <GridViewColumn Header="Nr Matricol" Width="100" DisplayMemberBinding="{Binding NumarMatricol}"/>
+                                    <GridViewColumn Header="Nume" Width="100" DisplayMemberBinding="{Binding Nume}"/>
+                                    <GridViewColumn Header="Prenume" Width="100" DisplayMemberBinding="{Binding Prenume}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" Margin="0,73,0,0" Width="434">
+                            <Grid HorizontalAlignment="Center" Margin="0, 0, 0, 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="311*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Cod matricol" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
+                                <TextBox Height="25" Grid.Column="1" Width="200" x:Name="codMatricolTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Center" Margin="0, 5, 0, 5" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="311*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Nume" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
+                                <TextBox Height="25" Grid.Column="1" Width="200" x:Name="numeTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Center" Margin="0, 5, 0, 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="311*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Prenume" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
+                                <TextBox Height="25" Grid.Column="1" Width="200" x:Name="prenumeTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                            <Grid Margin="0 20 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Column="1" IsEnabled="False" Content="Sterge" x:Name="stergeButtonStudent" Template="{DynamicResource ButonDeBaza}" Click="stergeButtonStudent_Click">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Setter Property="Padding" Value="1" />
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <Button Grid.Column="3" Content="Adaugare" x:Name="adaugareModificareButton" Click="adaugareModificareButton_Click">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Setter Property="Padding" Value="1" />
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+
+
+            </TabControl>
+
+            <Label x:Name="statusbar" FontSize="13" Foreground="White" Grid.Row="2" Content="Testtest" Opacity="0" VerticalAlignment="Center" Margin="10, 0, 0, 0"/>
+
         </Grid>
-
-        <TabControl x:Name="tabsComponent" BorderThickness="0, 0 ,0 ,0" Foreground="black" Background="#343a40" HorizontalAlignment="Center" Height="438" VerticalAlignment="Center" Width="837" Margin="13,11,50,21" Grid.Row="1">
-
-            <TabItem x:Name="catalogTab" Padding="7,2,7,2" Header="Catalog" Style="{DynamicResource altaCopie}" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190*"/>
-                        <ColumnDefinition Width="207*"/>
-                    </Grid.ColumnDefinitions>
-                    <ListView x:Name="catalogLV" Margin="0,-3,0,-7" HorizontalAlignment="Right" Width="399" Height="422" VerticalAlignment="Bottom">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding id}"/>
-                                <GridViewColumn Header="Student">
-                                    <GridViewColumn.DisplayMemberBinding>
-                                        <MultiBinding StringFormat="{}{0} {1}">
-                                            <Binding Path="Nume" />
-                                            <Binding Path="Prenume" />
-                                        </MultiBinding>
-                                    </GridViewColumn.DisplayMemberBinding>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Curs" DisplayMemberBinding="{Binding Denumire}"/>
-                                <GridViewColumn Header="Nota" DisplayMemberBinding="{Binding Nota}"/>
-                                <GridViewColumn Header="Credite" DisplayMemberBinding="{Binding NumarCredite}"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="disciplineTab" Padding="7,2,7,2" Header="Discipline" Style="{DynamicResource altaCopie}" >
-
-                <Grid Margin="0,0,0,-10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190*"/>
-                        <ColumnDefinition Width="207*"/>
-                    </Grid.ColumnDefinitions>
-                    <ListView Name="disciplineLV" HorizontalAlignment="Left" Height="438" VerticalAlignment="Top" Width="399" SelectionChanged="ListView_SelectionChanged" Margin="0,-4,0,-12">
-                        <ListView.View >
-                            <GridView>
-                                <GridViewColumn Width="100" Header="Cod Disciplina" DisplayMemberBinding="{Binding Cod_Disciplina}"/>
-                                <GridViewColumn Header="Denumire" Width="175" DisplayMemberBinding="{Binding Denumire}"/>
-                                <GridViewColumn Width="50" Header="Credite" DisplayMemberBinding="{Binding NumarCredite}"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </TabItem>
-            <TabItem x:Name="studentiTab" Padding="7,2,7,2" Header="Studenti" Style="{DynamicResource altaCopie}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190*"/>
-                        <ColumnDefinition Width="207*"/>
-                    </Grid.ColumnDefinitions>
-                    <ListView MouseLeftButtonDown="listViewOnClick" Name="studentiLV" HorizontalAlignment="Left" Height="438" VerticalAlignment="Top" Width="399" SelectionChanged="ListView_SelectionChanged" Margin="0,-4,0,-22">
-                        <ListView.View >
-                            <GridView>
-                                <GridViewColumn Header="Nr Matricol" Width="100" DisplayMemberBinding="{Binding NumarMatricol}"/>
-                                <GridViewColumn Header="Nume" Width="100" DisplayMemberBinding="{Binding Nume}"/>
-                                <GridViewColumn Header="Prenume" Width="100" DisplayMemberBinding="{Binding Prenume}"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Center" Margin="0,73,0,0" Width="434">
-                        <Grid HorizontalAlignment="Center" Margin="0, 0, 0, 5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="123*" />
-                                <ColumnDefinition Width="311*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Cod matricol" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
-                            <TextBox Height="25" Grid.Column="1" Width="200" x:Name="codMatricolTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        </Grid>
-                        <Grid HorizontalAlignment="Center" Margin="0, 5, 0, 5" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="123*" />
-                                <ColumnDefinition Width="311*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Nume" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
-                            <TextBox Height="25" Grid.Column="1" Width="200" x:Name="numeTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        </Grid>
-                        <Grid HorizontalAlignment="Center" Margin="0, 5, 0, 5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="123*" />
-                                <ColumnDefinition Width="311*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Prenume" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
-                            <TextBox Height="25" Grid.Column="1" Width="200" x:Name="prenumeTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        </Grid>
-                        <Grid Margin="0 20 0 0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                            </Grid.RowDefinitions>
-                            <Button Grid.Column="1" IsEnabled="False" Content="Sterge" x:Name="stergeButtonStudent" Template="{DynamicResource ButonDeBaza}" Click="stergeButtonStudent_Click">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Background" Value="Transparent" />
-                                        <Setter Property="Foreground" Value="White" />
-                                        <Setter Property="Padding" Value="1" />
-                                        <Setter Property="Cursor" Value="Hand" />
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Foreground" Value="Black"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                            <Button Grid.Column="3" Content="Adaugare" x:Name="adaugareModificareButton" Click="adaugareModificareButton_Click">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Background" Value="Transparent" />
-                                        <Setter Property="Foreground" Value="White" />
-                                        <Setter Property="Padding" Value="1" />
-                                        <Setter Property="Cursor" Value="Hand" />
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Foreground" Value="Black"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-
-
-        </TabControl>
-        
-        
-
-    </Grid>
+    </Border>
 </Window>
