@@ -94,9 +94,8 @@
 
 
     </Window.Resources>
-    <Border BorderThickness="2" CornerRadius="0" BorderBrush="#343a40">
-
-        <Grid Background="#343a40">
+    <Border BorderThickness="4" CornerRadius="10" BorderBrush="#343a40" Background="Transparent">
+          <Grid Background="#343a40">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
@@ -167,6 +166,7 @@
                 </Button>
             </Grid>
 
+            
             <TabControl x:Name="tabsComponent" BorderThickness="0, 0 ,0 ,0" Foreground="black" Background="#343a40" HorizontalAlignment="Center" Height="426" VerticalAlignment="Top" Width="838" Margin="12,11,50,0" Grid.Row="1">
 
                 <TabItem x:Name="catalogTab" Padding="7,2,7,2" Header="Catalog" Style="{DynamicResource altaCopie}" >
@@ -391,5 +391,6 @@
             <Label x:Name="statusbar" FontSize="13" Foreground="White" Grid.Row="2" Content="Testtest" Opacity="0" VerticalAlignment="Center" Margin="10, 0, 0, 0"/>
 
         </Grid>
+      
     </Border>
 </Window>
