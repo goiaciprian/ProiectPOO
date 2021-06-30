@@ -169,13 +169,13 @@
             
             <TabControl x:Name="tabsComponent" BorderThickness="0, 0 ,0 ,0" Foreground="black" Background="#343a40" HorizontalAlignment="Center" Height="426" VerticalAlignment="Top" Width="838" Margin="12,11,50,0" Grid.Row="1">
 
-                <TabItem x:Name="catalogTab" Padding="7,2,7,2" Header="Catalog" Style="{DynamicResource altaCopie}" >
+                <TabItem x:Name="catalogTab" Padding="7,2,7,2" Header="Catalog" Style="{DynamicResource altaCopie}"  >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="190*"/>
                             <ColumnDefinition Width="207*"/>
                         </Grid.ColumnDefinitions>
-                        <ListView x:Name="catalogLV" Margin="0,-3,0,10">
+                        <ListView x:Name="catalogLV" Margin="0,-3,0,10" SelectionChanged="ListView_SelectionChanged" MouseLeftButtonDown="listViewOnClick">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding id}"/>
@@ -193,6 +193,83 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center" Margin="0,73,0,0" Width="434">
+                            <Grid HorizontalAlignment="Center" Margin="0, 0, 0, 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="311*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Student" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,10,0" Width="89" />
+                                <ComboBox Height="25" Grid.Column="1" Width="200" x:Name="studentiDropdown" VerticalAlignment="Center" HorizontalAlignment="Center"  DisplayMemberPath="NumeComplet" SelectedValuePath="NumarMatricol"/>
+                            </Grid>
+                            <Grid HorizontalAlignment="Center" Margin="0, 5, 0, 5" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="311*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Disciplina" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
+                                <ComboBox Height="25" Grid.Column="1" Width="200" x:Name="disciplinaDropdown" VerticalAlignment="Center" HorizontalAlignment="Center" DisplayMemberPath="Denumire" SelectedValuePath="CodDisciplina" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Center" Margin="0, 5, 0, 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="123*" />
+                                    <ColumnDefinition Width="311*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Nota" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
+                                <TextBox Height="25" Grid.Column="1" Width="200" x:Name="notaTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                            <Grid Margin="0 20 0 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Button  Grid.Column="1" IsEnabled="False" Content="Sterge" x:Name="stergeButtonCatalog" Template="{DynamicResource ButonDeBaza}" Height="30" VerticalAlignment="Top" Click="stergeButtonCatalog_Click">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Setter Property="Padding" Value="1" />
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <Button Grid.Column="3" Content="Adaugare" x:Name="adaugareModificareCatalog" Click="adaugareModificareCatalog_Click" >
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Setter Property="Padding" Value="1" />
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="Black"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </StackPanel>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="disciplineTab" Padding="7,2,7,2" Header="Discipline" Style="{DynamicResource altaCopie}" >
@@ -202,7 +279,7 @@
                             <ColumnDefinition Width="190*"/>
                             <ColumnDefinition Width="207*"/>
                         </Grid.ColumnDefinitions>
-                        <ListView Name="disciplineLV" HorizontalAlignment="Left" Width="399" SelectionChanged="ListView_SelectionChanged" Margin="0,-4,0,0" Height="393" VerticalAlignment="Top">
+                        <ListView Name="disciplineLV" HorizontalAlignment="Left" Width="399" SelectionChanged="ListView_SelectionChanged" Margin="0,-4,0,0" Height="393" VerticalAlignment="Top" MouseLeftButtonDown="listViewOnClick">
                             <ListView.View >
                                 <GridView>
                                     <GridViewColumn Width="100" Header="Cod Disciplina" DisplayMemberBinding="{Binding Cod_Disciplina}"/>
@@ -242,8 +319,8 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Nota" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
-                                <TextBox Height="25" Grid.Column="1" Width="200" x:Name="notaTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Credite" Grid.Column="0" Foreground="White" Height="26" Margin="24,0,21,0" Width="78" />
+                                <TextBox Height="25" Grid.Column="1" Width="200" x:Name="crediteTextBox" VerticalAlignment="Center" HorizontalAlignment="Center" />
                             </Grid>
                             <Grid Margin="0 20 0 0">
                                 <Grid.ColumnDefinitions>
@@ -256,7 +333,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Column="1" IsEnabled="False" Content="Sterge" x:Name="stergeButtonDisciplina" Template="{DynamicResource ButonDeBaza}">
+                                <Button Click="stergeButtonDisciplina_Click" Grid.Column="1" IsEnabled="False" Content="Sterge" x:Name="stergeButtonDisciplina" Template="{DynamicResource ButonDeBaza}" Height="30" VerticalAlignment="Top">
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Background" Value="Transparent" />
@@ -271,7 +348,7 @@
                                         </Style>
                                     </Button.Style>
                                 </Button>
-                                <Button Grid.Column="3" Content="Adaugare" x:Name="adaugareModificareDisciplina" >
+                                <Button Grid.Column="3" Content="Adaugare" x:Name="adaugareModificareDisciplina" Click="adaugareModificareDisciplina_Click" >
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Background" Value="Transparent" />
@@ -389,7 +466,21 @@
             </TabControl>
 
             <Label x:Name="statusbar" FontSize="13" Foreground="White" Grid.Row="2" Content="Testtest" Opacity="0" VerticalAlignment="Center" Margin="10, 0, 0, 0"/>
-
+            <Button Content="Export CSV" BorderBrush="Transparent"  Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,5,0" Padding="5,0,5,0" Click="Button_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Padding" Value="1" />
+                        <Setter Property="Cursor" Value="Hand" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
       
     </Border>

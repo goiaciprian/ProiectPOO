@@ -26,7 +26,7 @@ namespace DatabaseCRUD.Database
             Cod_Disciplina = merge.Cod_Disciplina;
             Denumire = merge.Denumire;
             NumarCredite = merge.NumarCredite;
-            NumarMatricol = (int)merge.NumarMatricol;
+            NumarMatricol = merge.NumarMatricol;
             Nume = merge.Nume;
             Prenume = merge.Prenume;
             Nota = (int)merge.Nota;
@@ -47,7 +47,7 @@ namespace DatabaseCRUD.Database
         public string Cod_Disciplina { get; set; }
         public string Denumire { get; set; }
         public int NumarCredite { get; set; }
-        public int NumarMatricol { get; set; }
+        public int? NumarMatricol { get; set; }
         public string Nume { get; set; }
         public string Prenume { get; set; }
         public int Nota { get; set; }
