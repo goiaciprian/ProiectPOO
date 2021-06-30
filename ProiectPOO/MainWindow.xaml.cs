@@ -20,6 +20,7 @@ namespace ProiectPOO
         Studenti studentSelectat = null;
         Discipline disciplinaSelectata = null;
         Catalog catalogSelectat = null;
+
         public MainWindow()
         {
             
@@ -27,6 +28,7 @@ namespace ProiectPOO
             initAllLV();
             loadStudentiDropDown();
             loadDsiciplineDropDown();
+
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -111,9 +113,9 @@ namespace ProiectPOO
         private void initDisciplineLV ()
         {
             Task.Run(() =>
-            {
-                    foreach (var disciplina in DBCrud.DisciplineGET().Result)
-                        Dispatcher.Invoke(() => disciplineLV.Items.Add(disciplina));
+            {        
+                foreach (var disciplina in DBCrud.DisciplineGET().Result)
+                    Dispatcher.Invoke(() => disciplineLV.Items.Add(disciplina));
             });
 
         }
@@ -148,6 +150,8 @@ namespace ProiectPOO
             {
                 try
                 {
+                    if (studentiDropdown.Items.Count > 0)
+                        Dispatcher.Invoke(() => studentiDropdown.Items.Clear());
                     foreach(var student in DBCrud.StudentiGET().Result)
                     {
                         Dispatcher.Invoke(() => studentiDropdown.Items.Add(new StudentDropItem()
@@ -165,6 +169,8 @@ namespace ProiectPOO
             Task.Run(()=> {
                 try
                 {
+                    if (disciplinaDropdown.Items.Count > 0)
+                        Dispatcher.Invoke(() => disciplinaDropdown.Items.Clear());
                     foreach(var disciplina in DBCrud.DisciplineGET().Result)
                     {
                         Dispatcher.Invoke(() => disciplinaDropdown.Items.Add(new DisciplinaDropItem()
@@ -252,6 +258,7 @@ namespace ProiectPOO
                         var deleted = DBCrud.StudentiDELETE(studentSelectat.NumarMatricol).Result;
                         studentiLV.Items.Remove(studentSelectat);
                         showText("Studentul a fost sters.");
+                        loadStudentiDropDown();
                     } catch (Exception)
                     {
                         showText("Studentul nu a fost sters.");
@@ -289,8 +296,9 @@ namespace ProiectPOO
                         {
                             studentiLV.Items.Add(DBCrud.StudentiMERGE(int.Parse(codMatricol), nume, prenume).Result);
                             studentiLV.Items.Refresh();
+                            
                             showText("Studentul a fost adaugat.");
-
+                            loadStudentiDropDown();
                         }
                         catch (Exception)
                         {
@@ -346,9 +354,12 @@ namespace ProiectPOO
 
         private void showText(string text)
         {
-            statusbar.Content = text;
-            Storyboard sb = Resources["hideAnimatie"] as Storyboard;
-            sb.Begin(statusbar);
+            Dispatcher.Invoke(() => {
+                statusbar.Content = text;
+                Storyboard sb = Resources["hideAnimatie"] as Storyboard;
+                sb.Begin(statusbar);
+
+            });
         }
 
         private void stergeButtonDisciplina_MouseDown(object sender, MouseButtonEventArgs e)
@@ -380,6 +391,7 @@ namespace ProiectPOO
                             disciplineLV.Items.Add(merged);
                             disciplineLV.Items.Refresh();
                             showText("Disciplina a fost adaugata.");
+
                         }
                         else
                         {
@@ -387,7 +399,9 @@ namespace ProiectPOO
                             disciplineLV.Items.Add(merged);
                             disciplineLV.Items.Refresh();
                             showText("Disciplina a fost modificata.");
+                            
                         }
+                        loadDsiciplineDropDown();
                     }
                     catch (Exception)
                     {
@@ -418,6 +432,7 @@ namespace ProiectPOO
                         var deleted = DBCrud.DisciplineDELETE(disciplinaSelectata.Cod_Disciplina).Result;
                         disciplineLV.Items.Remove(disciplinaSelectata);
                         showText("Disciplina a fost stearsa.");
+                        loadDsiciplineDropDown();
                     }
                     catch (Exception)
                     {
@@ -511,6 +526,11 @@ namespace ProiectPOO
                     }
                 });
             });
+        }
+
+        private void tabsComponent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
         }
     }
 }
