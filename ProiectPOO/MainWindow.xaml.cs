@@ -166,6 +166,8 @@ namespace ProiectPOO
 
         private void loadDsiciplineDropDown()
         {
+
+
             Task.Run(()=> {
                 try
                 {
